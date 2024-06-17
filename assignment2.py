@@ -5,7 +5,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import intervals
-
+import math
 
 class Assignment2(object):
     """Assignment 2 skeleton.
@@ -43,7 +43,7 @@ class Assignment2(object):
         empirical_errors, true_errors = self.experiment_m_range_erm_calculations(ms, k, T)
         plt.plot(ms, empirical_errors, label='Empirical Error')
         plt.plot(ms, true_errors, label='True Error')
-        plt.xlabel('m')
+        plt.xlabel('n')
         plt.ylabel('Error')
         plt.legend()
         plt.show()
