@@ -89,7 +89,6 @@ class Assignment2(object):
         penalty_emperical_error_sum_list = [penalties[i] + empirical_errors[i] for i in range(len(ks))]
 
         plt.plot(ks, empirical_errors, label='Empirical Error')
-        plt.plot(ks, true_errors, label='True Error')
         plt.plot(ks, penalties, label='Penalty')
         plt.plot(ks, penalty_emperical_error_sum_list, label='Penalty + Empirical Error')
         plt.xlabel('k')
