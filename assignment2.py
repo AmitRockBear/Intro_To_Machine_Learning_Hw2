@@ -104,17 +104,23 @@ class Assignment2(object):
         Returns: The best k value (an integer) found by the cross validation algorithm.
         """
         samples = self.sample_from_D(m)
-        ks = list(range(1, 11))
-        xs, ys = samples[:, 0], samples[:, 1]
+        np.random.shuffle(samples)
+
         train_size = int(0.8 * m)
-        xs_train, ys_train = xs[:train_size], ys[:train_size]
-        xs_validate, ys_validate = xs[train_size:], ys[train_size:]
+        train = np.array(sorted(samples[:train_size], key=lambda x: x[0]))
+        validate = np.array(sorted(samples[train_size:], key=lambda x: x[0]))
+
+        ks = list(range(1, 11))
+        xs_train, ys_train = train[:, 0], train[:, 1]
+        xs_validate, ys_validate = validate[:, 0], validate[:, 1]
         validation_errors = []
+        hypothesises = []
         
         for k in ks:
             hypothesis, _ = intervals.find_best_interval(xs_train, ys_train, k)
+            hypothesises.append(hypothesis)
             validation_errors.append(self.calculate_validation_error(xs_validate, ys_validate, hypothesis))
-        
+
         return ks[np.argmin(validation_errors)]
 
     #################################
@@ -224,13 +230,13 @@ class Assignment2(object):
         for i in range(validate_size):
             x = xs_validate[i]
             y = ys_validate[i]
-            found = False
+            x_predict_label = 0
             for interval in hypothesis:
-                if interval[0] <= x <= interval[1] and y == 0:
-                    validation_error_count+=1
-                    found = True
-            if not found and y == 1:
-                validation_error_count+=1
+                if interval[0] <= x <= interval[1]:
+                    x_predict_label = 1
+                    break
+            if x_predict_label != y:
+                validation_error_count += 1
 
         return validation_error_count / validate_size
     #################################
